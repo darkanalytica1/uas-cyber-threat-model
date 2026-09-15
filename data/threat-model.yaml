@@ -1,0 +1,375 @@
+# Reference threat model for a generic small unmanned aircraft system.
+# Educational and defensive. It describes threat classes and the controls that counter them,
+# at the level of a design review. It is not an assessment of any specific product.
+#
+# Rule enforced by tests: every surface has at least one entry for every STRIDE category.
+# If a category genuinely does not apply, add an entry with `not_applicable: <rationale>`.
+
+system: Generic small UAS (reference architecture)
+
+stride:
+  S: {threat: Spoofing, property: Authentication}
+  T: {threat: Tampering, property: Integrity}
+  R: {threat: Repudiation, property: Non-repudiation}
+  I: {threat: Information disclosure, property: Confidentiality}
+  D: {threat: Denial of service, property: Availability}
+  E: {threat: Elevation of privilege, property: Authorisation}
+
+trust_boundaries:
+  - id: TB-RF
+    name: Air-ground radio boundary
+    description: Anyone within radio range can transmit and receive. Nothing crossing it is trusted by default.
+  - id: TB-ONBOARD
+    name: Flight-critical zone versus payload zone
+    description: The flight controller must keep flying even if the companion computer is compromised.
+  - id: TB-GROUND
+    name: Operator endpoint versus enterprise and internet
+    description: The ground control station sits on networks and runs software the operator does not fully control.
+  - id: TB-CLOUD
+    name: Organisation versus cloud service and other tenants
+    description: Fleet data and tasking cross a public network into a multi-tenant service.
+  - id: TB-SUPPLY
+    name: Organisation versus suppliers and build infrastructure
+    description: Components, software and signing happen outside the operator's direct control.
+
+surfaces:
+  - id: AV
+    name: Air vehicle
+    boundary: TB-RF
+    description: Flight controller, GNSS receiver, inertial and air-data sensors, maintenance ports.
+  - id: CC
+    name: Companion computer
+    boundary: TB-ONBOARD
+    description: Onboard processor running autonomy, perception and payload software beside the flight controller.
+  - id: DL
+    name: Command and telemetry datalink
+    boundary: TB-RF
+    description: Radio links carrying commands up and telemetry and video down.
+  - id: GCS
+    name: Ground control station
+    boundary: TB-GROUND
+    description: Operator laptop or tablet running mission planning and control software.
+  - id: API
+    name: Cloud and fleet API
+    boundary: TB-CLOUD
+    description: Backend for fleet management, flight logs, media, tasking and updates.
+  - id: SC
+    name: Supply chain and update path
+    boundary: TB-SUPPLY
+    description: Hardware components, third-party software, build pipeline, signing keys and update distribution.
+
+controls:
+  C-SIGN:
+    name: Authenticated datalink with anti-replay
+    detail: Per-vehicle link keys, message authentication on every command and telemetry frame, strictly increasing timestamps or counters.
+    refs: [MAVLink 2 message signing, RFC 2104]
+  C-ENC:
+    name: Link encryption
+    detail: Confidentiality for commands, telemetry and video where the mission requires it. Complements, does not replace, authentication.
+    refs: [NIST SP 800-207]
+  C-CMDAUTHZ:
+    name: Command authorisation by role
+    detail: Safety-critical and configuration commands (parameter write, firmware upload, arming) allowed only from explicitly authorised identities and flight phases.
+    refs: [NIST SP 800-207]
+  C-DIV:
+    name: Link diversity and tested lost-link behaviour
+    detail: Independent bearers where justified; documented and tested behaviour on link loss.
+    refs: [ASTM F3269]
+  C-NAVX:
+    name: Multi-source navigation integrity
+    detail: Inertial, visual and absolute sources cross-checked by an estimator with innovation gating and independent consistency monitors; defined behaviour on disagreement.
+    refs: [Psiaki and Humphreys 2016, Groves 2013]
+  C-GNSSAUTH:
+    name: GNSS interference detection and authenticated signals
+    detail: Monitor power, C/N0 and clock behaviour; use navigation message authentication where available.
+    refs: [EUSPA Galileo OSNMA, Psiaki and Humphreys 2016]
+  C-BOOT:
+    name: Secure boot and signed firmware with anti-rollback
+    detail: Each stage verifies the next against a hardware root of trust; images carry a monotonic security version.
+    refs: [NIST SP 800-193, NIST SP 800-147]
+  C-DEBUG:
+    name: Locked debug interfaces
+    detail: Hardware debug ports disabled or authenticated in production units.
+    refs: [NIST SP 800-193]
+  C-PHYS:
+    name: Physical tamper evidence
+    detail: Seals, enclosure switches and inspection on recovery of a vehicle.
+    refs: [IEC 62443-4-2]
+  C-KEY:
+    name: Key management and zeroisation
+    detail: Keys in secure elements or HSMs, unique per device, rotated, revocable, and erased on tamper or loss.
+    refs: [NIST SP 800-57]
+  C-DATA:
+    name: Encryption at rest and data minimisation
+    detail: Full-disk encryption on ground and onboard storage; keep only what the mission needs.
+    refs: [NIST SP 800-111]
+  C-SEG:
+    name: Segmentation with a constrained conduit
+    detail: Companion computer reaches the flight controller only through an allow-listed, validated command set.
+    refs: [IEC 62443-3-3 zones and conduits]
+  C-LEAST:
+    name: Least privilege
+    detail: Services run unprivileged; accounts, tokens and processes get only the rights they need.
+    refs: [NIST SP 800-207]
+  C-RTA:
+    name: Runtime assurance and resource limits
+    detail: Watchdogs, resource quotas and a simple verified fallback that takes over if complex software misbehaves.
+    refs: [ASTM F3269]
+  C-EP:
+    name: Hardened ground endpoint
+    detail: Dedicated device, patched by version, application allow-listing, no general browsing or email, endpoint monitoring.
+    refs: [NIST SP 800-123]
+  C-MFA:
+    name: Individual accounts with phishing-resistant MFA
+    detail: No shared operator accounts; hardware-backed authenticators for ground, cloud and fleet logins.
+    refs: [NIST SP 800-63B]
+  C-INTEG:
+    name: Signed mission and configuration files
+    detail: Mission plans, geofences and parameter sets are signed by the planning authority and verified before use.
+    refs: [NIST SP 800-207]
+  C-LOG:
+    name: Tamper-evident, time-synchronised logging
+    detail: Hash-chained logs on vehicle, ground and cloud, anchored off-device, with authenticated time.
+    refs: [NIST SP 800-92]
+  C-SPARE:
+    name: Redundant ground capability
+    detail: Tested spare GCS and a procedure to transfer control.
+    refs: [ASTM F3269]
+  C-TOKEN:
+    name: Short-lived, scoped, bound tokens
+    detail: Access tokens with short expiry, narrow scope, refresh rotation and sender constraint.
+    refs: [OAuth 2.0 Security Best Current Practice (RFC 9700)]
+  C-API:
+    name: Object- and function-level authorisation
+    detail: Every request authorised server-side for the specific object and function, from the caller's identity.
+    refs: [OWASP API Security Top 10]
+  C-RATE:
+    name: Rate limiting and abuse protection
+    detail: Quotas and throttling on APIs and on link message handling.
+    refs: [OWASP API Security Top 10]
+  C-OFFLINE:
+    name: Degraded local operation
+    detail: Core flight and mission functions continue without the cloud; synchronisation resumes later.
+    refs: [NIST SP 800-207]
+  C-TLS:
+    name: Authenticated transport
+    detail: Mutual TLS or certificate validation for every service connection, including update downloads.
+    refs: [NIST SP 800-52]
+  C-SBOM:
+    name: SBOM and component provenance
+    detail: Machine-readable inventory of software and hardware components with origin; vulnerability monitoring against it.
+    refs: [NTIA SBOM minimum elements, EU Cyber Resilience Act]
+  C-REPRO:
+    name: Build provenance and reproducible builds
+    detail: Signed build attestations; independent rebuilds confirm binaries match source.
+    refs: [SLSA, Reproducible Builds]
+  C-CM:
+    name: Configuration management
+    detail: Record of what hardware, firmware and software is on which unit.
+    refs: [ISO 10007]
+  C-STAGED:
+    name: Staged rollout with recovery
+    detail: Updates reach a small group first; a known-good image can be restored.
+    refs: [NIST SP 800-193]
+  C-IR:
+    name: Incident response plan
+    detail: Procedures for compromised GCS, leaked keys and suspected spoofing, with contacts and reporting obligations.
+    refs: [NIST SP 800-61]
+
+threats:
+  # ---------------------------------------------------------------- air vehicle
+  - surface: AV
+    stride: S
+    threat: Counterfeit GNSS signals produce a false position and time that the flight controller accepts as truth.
+    controls: [C-NAVX, C-GNSSAUTH]
+    residual: Slow carry-off is detected only once it exceeds what independent sensors can explain.
+  - surface: AV
+    stride: T
+    threat: Parameters or firmware altered through a maintenance port during storage or maintenance.
+    controls: [C-BOOT, C-DEBUG, C-PHYS, C-LOG]
+    residual: Insider with legitimate maintenance access.
+  - surface: AV
+    stride: R
+    threat: A configuration or flight-mode change cannot be attributed to a person or a message.
+    controls: [C-LOG, C-SIGN]
+    residual: Clock drift without authenticated time weakens ordering across nodes.
+  - surface: AV
+    stride: I
+    threat: A lost or captured airframe exposes link keys, mission data and stored imagery.
+    controls: [C-KEY, C-DATA]
+    residual: Data in volatile memory at the moment of capture.
+  - surface: AV
+    stride: D
+    threat: GNSS jamming or sensor saturation removes navigation inputs.
+    controls: [C-NAVX, C-DIV]
+    residual: Vision-based fallbacks fail over featureless terrain, at night without infrared, or in smoke.
+  - surface: AV
+    stride: E
+    threat: An unsigned image or open debug interface gives full control of the flight controller.
+    controls: [C-BOOT, C-DEBUG]
+    residual: Hardware-level fault injection by a well-resourced attacker with physical access.
+
+  # ---------------------------------------------------------------- companion computer
+  - surface: CC
+    stride: S
+    threat: A process on the onboard network impersonates the autopilot or a sensor to other onboard software.
+    controls: [C-SEG, C-SIGN]
+    residual: Shared-memory or bus designs without per-component identity.
+  - surface: CC
+    stride: T
+    threat: Autonomy, perception software or model files are modified.
+    controls: [C-BOOT, C-SBOM, C-REPRO]
+    residual: Models are hard to review; integrity proves origin, not correctness.
+  - surface: CC
+    stride: R
+    threat: An autonomous decision cannot be reconstructed afterwards.
+    controls: [C-LOG, C-CM]
+    residual: Log volume limits on small platforms force summarisation.
+  - surface: CC
+    stride: I
+    threat: Payload imagery or intelligence leaks through network services running on the companion computer.
+    controls: [C-DATA, C-LEAST, C-TLS]
+    residual: Debug and development services left enabled in the field.
+  - surface: CC
+    stride: D
+    threat: Resource exhaustion or a crash stops perception and autonomy mid-mission.
+    controls: [C-RTA, C-SEG]
+    residual: Mission capability is lost even when flight safety is preserved.
+  - surface: CC
+    stride: E
+    threat: A compromised companion computer reaches flight control through an unrestricted bus.
+    controls: [C-SEG, C-LEAST, C-CMDAUTHZ]
+    residual: Allow-listed commands can still be misused within their bounds.
+
+  # ---------------------------------------------------------------- datalink
+  - surface: DL
+    stride: S
+    threat: Commands from an unauthenticated source are accepted because the link does not authenticate messages.
+    controls: [C-SIGN, C-KEY]
+    residual: Key compromise on any endpoint that holds the key.
+  - surface: DL
+    stride: S
+    threat: A recorded, validly authenticated command is replayed later.
+    controls: [C-SIGN]
+    residual: Freshness depends on correct timestamp handling and clock sanity at both ends.
+  - surface: DL
+    stride: T
+    threat: Telemetry is altered in transit so the operator acts on a false picture.
+    controls: [C-SIGN, C-ENC]
+    residual: Unauthenticated video downlinks.
+  - surface: DL
+    stride: R
+    threat: A command cannot be tied to one ground station because a single key is shared across the fleet.
+    controls: [C-KEY, C-LOG]
+    residual: Shared keys remain common for operational convenience.
+  - surface: DL
+    stride: I
+    threat: Telemetry and video reveal position, mission and operator location to a passive listener.
+    controls: [C-ENC]
+    residual: Emissions remain detectable and locatable even when encrypted.
+  - surface: DL
+    stride: D
+    threat: Radio jamming or message flooding denies command and control.
+    controls: [C-DIV, C-RATE]
+    residual: "Physics: a sufficiently powerful jammer in the right geometry wins."
+  - surface: DL
+    stride: E
+    threat: Configuration, firmware upload or arming commands are accepted from any authenticated sender in any flight phase.
+    controls: [C-CMDAUTHZ, C-SIGN]
+    residual: Authorisation policy errors.
+
+  # ---------------------------------------------------------------- ground control station
+  - surface: GCS
+    stride: S
+    threat: Stolen operator credentials let someone operate as the pilot.
+    controls: [C-MFA, C-EP]
+    residual: Session hijacking on an already compromised host.
+  - surface: GCS
+    stride: T
+    threat: A mission plan, geofence or map file is altered before upload.
+    controls: [C-INTEG, C-EP]
+    residual: Plans edited in the field under time pressure.
+  - surface: GCS
+    stride: R
+    threat: An operator action cannot be attributed because accounts are shared.
+    controls: [C-MFA, C-LOG]
+    residual: Physical access to an unlocked station.
+  - surface: GCS
+    stride: I
+    threat: A lost laptop exposes keys, plans, imagery and credentials.
+    controls: [C-DATA, C-KEY]
+    residual: Data copied to removable media.
+  - surface: GCS
+    stride: D
+    threat: Malware or an untested update disables the station during a mission.
+    controls: [C-EP, C-SPARE, C-IR]
+    residual: Common-mode failure if spares share the same image.
+  - surface: GCS
+    stride: E
+    threat: Unpatched software allows local privilege escalation to the control application and its keys.
+    controls: [C-EP, C-LEAST]
+    residual: Vulnerabilities not yet known or patched.
+
+  # ---------------------------------------------------------------- cloud and fleet API
+  - surface: API
+    stride: S
+    threat: A leaked bearer token grants API access with no further authentication.
+    controls: [C-TOKEN, C-MFA]
+    residual: Tokens stolen from a compromised endpoint within their lifetime.
+  - surface: API
+    stride: T
+    threat: Uploaded flight logs, missions or fleet configuration are altered in the backend.
+    controls: [C-INTEG, C-LOG, C-API]
+    residual: Privileged backend administrators.
+  - surface: API
+    stride: R
+    threat: API actions such as tasking or configuration changes leave no attributable audit trail.
+    controls: [C-LOG]
+    residual: Logs held by the same provider that is being audited.
+  - surface: API
+    stride: I
+    threat: Broken object-level authorisation exposes another tenant's telemetry and flight history.
+    controls: [C-API, C-LEAST]
+    residual: New endpoints added without the same checks.
+  - surface: API
+    stride: D
+    threat: API abuse or outage blocks synchronisation, tasking and updates.
+    controls: [C-RATE, C-OFFLINE]
+    residual: Features that genuinely depend on the cloud.
+  - surface: API
+    stride: E
+    threat: Broken function-level authorisation lets an ordinary user reach administrative functions such as pushing updates.
+    controls: [C-API, C-LEAST, C-STAGED]
+    residual: Misconfigured roles.
+
+  # ---------------------------------------------------------------- supply chain and update path
+  - surface: SC
+    stride: S
+    threat: A counterfeit component or an impostor update server is accepted as genuine.
+    controls: [C-SBOM, C-BOOT, C-TLS]
+    residual: Counterfeits that are functionally identical until they fail.
+  - surface: SC
+    stride: T
+    threat: A malicious or vulnerable third-party component enters the build.
+    controls: [C-SBOM, C-REPRO]
+    residual: Vulnerabilities in components that are correctly inventoried but not yet disclosed.
+  - surface: SC
+    stride: R
+    threat: Nobody can establish which firmware and components were shipped on which unit.
+    controls: [C-CM, C-SBOM]
+    residual: Field modifications outside configuration control.
+  - surface: SC
+    stride: I
+    threat: Source code or signing keys leak from the build pipeline.
+    controls: [C-KEY, C-LEAST]
+    residual: Insiders with legitimate access.
+  - surface: SC
+    stride: D
+    threat: A faulty update disables the fleet, or a sole-source part becomes unavailable.
+    controls: [C-STAGED, C-CM]
+    residual: Long-lead obsolescence.
+  - surface: SC
+    stride: E
+    threat: A compromised build system signs attacker-supplied code with genuine keys.
+    controls: [C-KEY, C-REPRO]
+    residual: Signing infrastructure is a single point of trust.

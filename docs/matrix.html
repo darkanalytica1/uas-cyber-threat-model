@@ -1,0 +1,170 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Threat matrix · Generic small UAS (reference architecture)</title><style>
+:root{--paper:#F6F4EF;--surface:#FFFFFF;--line:#DAD6CC;--ink:#1B1F24;--ink2:#4A5058;--ink3:#7A8088;
+--navy:#1F3A5F;--signal:#A33A2B;--sage:#5E7F68;--tint:#E8EDF3}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);
+font:16px/1.6 'IBM Plex Sans',system-ui,-apple-system,'Segoe UI',sans-serif}
+main{max-width:1120px;margin:0 auto;padding:48px 24px}
+.label{font:500 12px/1 'IBM Plex Mono',ui-monospace,monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--ink3)}
+h1,h2{font-family:'Source Serif 4',Georgia,serif;font-weight:600;line-height:1.25}
+h1{font-size:32px;margin:12px 0 8px;border-top:3px solid var(--navy);padding-top:16px}h2{font-size:24px;margin:40px 0 12px}
+p{color:var(--ink2);max-width:760px}
+.wrap{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:6px}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{border-bottom:1px solid var(--line);padding:10px 12px;text-align:left;vertical-align:top}
+th{background:var(--paper);font-weight:600;position:sticky;top:0}
+th small{display:block;font:400 11px 'IBM Plex Mono',ui-monospace,monospace;color:var(--ink3);letter-spacing:.04em}
+.chip{display:inline-block;font:500 12px 'IBM Plex Mono',ui-monospace,monospace;background:var(--tint);
+color:var(--navy);border-radius:4px;padding:2px 6px;margin:2px 4px 2px 0;text-decoration:none}
+.chip:hover,.chip:focus{background:var(--navy);color:#fff}
+.mono{font-family:'IBM Plex Mono',ui-monospace,monospace;font-size:13px}
+td.res{color:var(--ink2)}
+</style></head><body><main>
+<!-- Generated from data/threat-model.yaml by `python -m uasthreat render`. Do not edit by hand. -->
+<div class="label">DarkAnalytica · threat model · defensive reference</div>
+<h1>Threat matrix: Generic small UAS (reference architecture)</h1>
+<p>Attack surfaces against STRIDE categories. Every cell is filled; each threat is paired with the controls that counter it and the residual risk that remains.</p>
+<div class="wrap"><table><thead><tr><th>Surface</th>
+<th>S · Spoofing<small>Authentication</small></th>
+<th>T · Tampering<small>Integrity</small></th>
+<th>R · Repudiation<small>Non-repudiation</small></th>
+<th>I · Information disclosure<small>Confidentiality</small></th>
+<th>D · Denial of service<small>Availability</small></th>
+<th>E · Elevation of privilege<small>Authorisation</small></th>
+</tr></thead><tbody>
+<tr><td><strong>AV</strong> Air vehicle<br><span class="mono">TB-RF</span></td>
+<td><a class="chip" href="#av-s1">AV-S1</a></td>
+<td><a class="chip" href="#av-t1">AV-T1</a></td>
+<td><a class="chip" href="#av-r1">AV-R1</a></td>
+<td><a class="chip" href="#av-i1">AV-I1</a></td>
+<td><a class="chip" href="#av-d1">AV-D1</a></td>
+<td><a class="chip" href="#av-e1">AV-E1</a></td>
+</tr>
+<tr><td><strong>CC</strong> Companion computer<br><span class="mono">TB-ONBOARD</span></td>
+<td><a class="chip" href="#cc-s1">CC-S1</a></td>
+<td><a class="chip" href="#cc-t1">CC-T1</a></td>
+<td><a class="chip" href="#cc-r1">CC-R1</a></td>
+<td><a class="chip" href="#cc-i1">CC-I1</a></td>
+<td><a class="chip" href="#cc-d1">CC-D1</a></td>
+<td><a class="chip" href="#cc-e1">CC-E1</a></td>
+</tr>
+<tr><td><strong>DL</strong> Command and telemetry datalink<br><span class="mono">TB-RF</span></td>
+<td><a class="chip" href="#dl-s1">DL-S1</a><a class="chip" href="#dl-s2">DL-S2</a></td>
+<td><a class="chip" href="#dl-t1">DL-T1</a></td>
+<td><a class="chip" href="#dl-r1">DL-R1</a></td>
+<td><a class="chip" href="#dl-i1">DL-I1</a></td>
+<td><a class="chip" href="#dl-d1">DL-D1</a></td>
+<td><a class="chip" href="#dl-e1">DL-E1</a></td>
+</tr>
+<tr><td><strong>GCS</strong> Ground control station<br><span class="mono">TB-GROUND</span></td>
+<td><a class="chip" href="#gcs-s1">GCS-S1</a></td>
+<td><a class="chip" href="#gcs-t1">GCS-T1</a></td>
+<td><a class="chip" href="#gcs-r1">GCS-R1</a></td>
+<td><a class="chip" href="#gcs-i1">GCS-I1</a></td>
+<td><a class="chip" href="#gcs-d1">GCS-D1</a></td>
+<td><a class="chip" href="#gcs-e1">GCS-E1</a></td>
+</tr>
+<tr><td><strong>API</strong> Cloud and fleet API<br><span class="mono">TB-CLOUD</span></td>
+<td><a class="chip" href="#api-s1">API-S1</a></td>
+<td><a class="chip" href="#api-t1">API-T1</a></td>
+<td><a class="chip" href="#api-r1">API-R1</a></td>
+<td><a class="chip" href="#api-i1">API-I1</a></td>
+<td><a class="chip" href="#api-d1">API-D1</a></td>
+<td><a class="chip" href="#api-e1">API-E1</a></td>
+</tr>
+<tr><td><strong>SC</strong> Supply chain and update path<br><span class="mono">TB-SUPPLY</span></td>
+<td><a class="chip" href="#sc-s1">SC-S1</a></td>
+<td><a class="chip" href="#sc-t1">SC-T1</a></td>
+<td><a class="chip" href="#sc-r1">SC-R1</a></td>
+<td><a class="chip" href="#sc-i1">SC-I1</a></td>
+<td><a class="chip" href="#sc-d1">SC-D1</a></td>
+<td><a class="chip" href="#sc-e1">SC-E1</a></td>
+</tr>
+</tbody></table></div>
+<h2>AV · Air vehicle</h2><p>Flight controller, GNSS receiver, inertial and air-data sensors, maintenance ports.</p>
+<div class="wrap"><table><thead><tr><th>ID</th><th>STRIDE</th><th>Threat</th><th>Controls</th><th>Residual risk</th></tr></thead><tbody>
+<tr id="av-s1"><td class="mono">AV-S1</td><td>Spoofing</td><td>Counterfeit GNSS signals produce a false position and time that the flight controller accepts as truth.</td><td><a class="chip" href="#c-navx">C-NAVX</a><a class="chip" href="#c-gnssauth">C-GNSSAUTH</a></td><td class="res">Slow carry-off is detected only once it exceeds what independent sensors can explain.</td></tr>
+<tr id="av-t1"><td class="mono">AV-T1</td><td>Tampering</td><td>Parameters or firmware altered through a maintenance port during storage or maintenance.</td><td><a class="chip" href="#c-boot">C-BOOT</a><a class="chip" href="#c-debug">C-DEBUG</a><a class="chip" href="#c-phys">C-PHYS</a><a class="chip" href="#c-log">C-LOG</a></td><td class="res">Insider with legitimate maintenance access.</td></tr>
+<tr id="av-r1"><td class="mono">AV-R1</td><td>Repudiation</td><td>A configuration or flight-mode change cannot be attributed to a person or a message.</td><td><a class="chip" href="#c-log">C-LOG</a><a class="chip" href="#c-sign">C-SIGN</a></td><td class="res">Clock drift without authenticated time weakens ordering across nodes.</td></tr>
+<tr id="av-i1"><td class="mono">AV-I1</td><td>Information disclosure</td><td>A lost or captured airframe exposes link keys, mission data and stored imagery.</td><td><a class="chip" href="#c-key">C-KEY</a><a class="chip" href="#c-data">C-DATA</a></td><td class="res">Data in volatile memory at the moment of capture.</td></tr>
+<tr id="av-d1"><td class="mono">AV-D1</td><td>Denial of service</td><td>GNSS jamming or sensor saturation removes navigation inputs.</td><td><a class="chip" href="#c-navx">C-NAVX</a><a class="chip" href="#c-div">C-DIV</a></td><td class="res">Vision-based fallbacks fail over featureless terrain, at night without infrared, or in smoke.</td></tr>
+<tr id="av-e1"><td class="mono">AV-E1</td><td>Elevation of privilege</td><td>An unsigned image or open debug interface gives full control of the flight controller.</td><td><a class="chip" href="#c-boot">C-BOOT</a><a class="chip" href="#c-debug">C-DEBUG</a></td><td class="res">Hardware-level fault injection by a well-resourced attacker with physical access.</td></tr>
+</tbody></table></div>
+<h2>CC · Companion computer</h2><p>Onboard processor running autonomy, perception and payload software beside the flight controller.</p>
+<div class="wrap"><table><thead><tr><th>ID</th><th>STRIDE</th><th>Threat</th><th>Controls</th><th>Residual risk</th></tr></thead><tbody>
+<tr id="cc-s1"><td class="mono">CC-S1</td><td>Spoofing</td><td>A process on the onboard network impersonates the autopilot or a sensor to other onboard software.</td><td><a class="chip" href="#c-seg">C-SEG</a><a class="chip" href="#c-sign">C-SIGN</a></td><td class="res">Shared-memory or bus designs without per-component identity.</td></tr>
+<tr id="cc-t1"><td class="mono">CC-T1</td><td>Tampering</td><td>Autonomy, perception software or model files are modified.</td><td><a class="chip" href="#c-boot">C-BOOT</a><a class="chip" href="#c-sbom">C-SBOM</a><a class="chip" href="#c-repro">C-REPRO</a></td><td class="res">Models are hard to review; integrity proves origin, not correctness.</td></tr>
+<tr id="cc-r1"><td class="mono">CC-R1</td><td>Repudiation</td><td>An autonomous decision cannot be reconstructed afterwards.</td><td><a class="chip" href="#c-log">C-LOG</a><a class="chip" href="#c-cm">C-CM</a></td><td class="res">Log volume limits on small platforms force summarisation.</td></tr>
+<tr id="cc-i1"><td class="mono">CC-I1</td><td>Information disclosure</td><td>Payload imagery or intelligence leaks through network services running on the companion computer.</td><td><a class="chip" href="#c-data">C-DATA</a><a class="chip" href="#c-least">C-LEAST</a><a class="chip" href="#c-tls">C-TLS</a></td><td class="res">Debug and development services left enabled in the field.</td></tr>
+<tr id="cc-d1"><td class="mono">CC-D1</td><td>Denial of service</td><td>Resource exhaustion or a crash stops perception and autonomy mid-mission.</td><td><a class="chip" href="#c-rta">C-RTA</a><a class="chip" href="#c-seg">C-SEG</a></td><td class="res">Mission capability is lost even when flight safety is preserved.</td></tr>
+<tr id="cc-e1"><td class="mono">CC-E1</td><td>Elevation of privilege</td><td>A compromised companion computer reaches flight control through an unrestricted bus.</td><td><a class="chip" href="#c-seg">C-SEG</a><a class="chip" href="#c-least">C-LEAST</a><a class="chip" href="#c-cmdauthz">C-CMDAUTHZ</a></td><td class="res">Allow-listed commands can still be misused within their bounds.</td></tr>
+</tbody></table></div>
+<h2>DL · Command and telemetry datalink</h2><p>Radio links carrying commands up and telemetry and video down.</p>
+<div class="wrap"><table><thead><tr><th>ID</th><th>STRIDE</th><th>Threat</th><th>Controls</th><th>Residual risk</th></tr></thead><tbody>
+<tr id="dl-s1"><td class="mono">DL-S1</td><td>Spoofing</td><td>Commands from an unauthenticated source are accepted because the link does not authenticate messages.</td><td><a class="chip" href="#c-sign">C-SIGN</a><a class="chip" href="#c-key">C-KEY</a></td><td class="res">Key compromise on any endpoint that holds the key.</td></tr>
+<tr id="dl-s2"><td class="mono">DL-S2</td><td>Spoofing</td><td>A recorded, validly authenticated command is replayed later.</td><td><a class="chip" href="#c-sign">C-SIGN</a></td><td class="res">Freshness depends on correct timestamp handling and clock sanity at both ends.</td></tr>
+<tr id="dl-t1"><td class="mono">DL-T1</td><td>Tampering</td><td>Telemetry is altered in transit so the operator acts on a false picture.</td><td><a class="chip" href="#c-sign">C-SIGN</a><a class="chip" href="#c-enc">C-ENC</a></td><td class="res">Unauthenticated video downlinks.</td></tr>
+<tr id="dl-r1"><td class="mono">DL-R1</td><td>Repudiation</td><td>A command cannot be tied to one ground station because a single key is shared across the fleet.</td><td><a class="chip" href="#c-key">C-KEY</a><a class="chip" href="#c-log">C-LOG</a></td><td class="res">Shared keys remain common for operational convenience.</td></tr>
+<tr id="dl-i1"><td class="mono">DL-I1</td><td>Information disclosure</td><td>Telemetry and video reveal position, mission and operator location to a passive listener.</td><td><a class="chip" href="#c-enc">C-ENC</a></td><td class="res">Emissions remain detectable and locatable even when encrypted.</td></tr>
+<tr id="dl-d1"><td class="mono">DL-D1</td><td>Denial of service</td><td>Radio jamming or message flooding denies command and control.</td><td><a class="chip" href="#c-div">C-DIV</a><a class="chip" href="#c-rate">C-RATE</a></td><td class="res">Physics: a sufficiently powerful jammer in the right geometry wins.</td></tr>
+<tr id="dl-e1"><td class="mono">DL-E1</td><td>Elevation of privilege</td><td>Configuration, firmware upload or arming commands are accepted from any authenticated sender in any flight phase.</td><td><a class="chip" href="#c-cmdauthz">C-CMDAUTHZ</a><a class="chip" href="#c-sign">C-SIGN</a></td><td class="res">Authorisation policy errors.</td></tr>
+</tbody></table></div>
+<h2>GCS · Ground control station</h2><p>Operator laptop or tablet running mission planning and control software.</p>
+<div class="wrap"><table><thead><tr><th>ID</th><th>STRIDE</th><th>Threat</th><th>Controls</th><th>Residual risk</th></tr></thead><tbody>
+<tr id="gcs-s1"><td class="mono">GCS-S1</td><td>Spoofing</td><td>Stolen operator credentials let someone operate as the pilot.</td><td><a class="chip" href="#c-mfa">C-MFA</a><a class="chip" href="#c-ep">C-EP</a></td><td class="res">Session hijacking on an already compromised host.</td></tr>
+<tr id="gcs-t1"><td class="mono">GCS-T1</td><td>Tampering</td><td>A mission plan, geofence or map file is altered before upload.</td><td><a class="chip" href="#c-integ">C-INTEG</a><a class="chip" href="#c-ep">C-EP</a></td><td class="res">Plans edited in the field under time pressure.</td></tr>
+<tr id="gcs-r1"><td class="mono">GCS-R1</td><td>Repudiation</td><td>An operator action cannot be attributed because accounts are shared.</td><td><a class="chip" href="#c-mfa">C-MFA</a><a class="chip" href="#c-log">C-LOG</a></td><td class="res">Physical access to an unlocked station.</td></tr>
+<tr id="gcs-i1"><td class="mono">GCS-I1</td><td>Information disclosure</td><td>A lost laptop exposes keys, plans, imagery and credentials.</td><td><a class="chip" href="#c-data">C-DATA</a><a class="chip" href="#c-key">C-KEY</a></td><td class="res">Data copied to removable media.</td></tr>
+<tr id="gcs-d1"><td class="mono">GCS-D1</td><td>Denial of service</td><td>Malware or an untested update disables the station during a mission.</td><td><a class="chip" href="#c-ep">C-EP</a><a class="chip" href="#c-spare">C-SPARE</a><a class="chip" href="#c-ir">C-IR</a></td><td class="res">Common-mode failure if spares share the same image.</td></tr>
+<tr id="gcs-e1"><td class="mono">GCS-E1</td><td>Elevation of privilege</td><td>Unpatched software allows local privilege escalation to the control application and its keys.</td><td><a class="chip" href="#c-ep">C-EP</a><a class="chip" href="#c-least">C-LEAST</a></td><td class="res">Vulnerabilities not yet known or patched.</td></tr>
+</tbody></table></div>
+<h2>API · Cloud and fleet API</h2><p>Backend for fleet management, flight logs, media, tasking and updates.</p>
+<div class="wrap"><table><thead><tr><th>ID</th><th>STRIDE</th><th>Threat</th><th>Controls</th><th>Residual risk</th></tr></thead><tbody>
+<tr id="api-s1"><td class="mono">API-S1</td><td>Spoofing</td><td>A leaked bearer token grants API access with no further authentication.</td><td><a class="chip" href="#c-token">C-TOKEN</a><a class="chip" href="#c-mfa">C-MFA</a></td><td class="res">Tokens stolen from a compromised endpoint within their lifetime.</td></tr>
+<tr id="api-t1"><td class="mono">API-T1</td><td>Tampering</td><td>Uploaded flight logs, missions or fleet configuration are altered in the backend.</td><td><a class="chip" href="#c-integ">C-INTEG</a><a class="chip" href="#c-log">C-LOG</a><a class="chip" href="#c-api">C-API</a></td><td class="res">Privileged backend administrators.</td></tr>
+<tr id="api-r1"><td class="mono">API-R1</td><td>Repudiation</td><td>API actions such as tasking or configuration changes leave no attributable audit trail.</td><td><a class="chip" href="#c-log">C-LOG</a></td><td class="res">Logs held by the same provider that is being audited.</td></tr>
+<tr id="api-i1"><td class="mono">API-I1</td><td>Information disclosure</td><td>Broken object-level authorisation exposes another tenant&#x27;s telemetry and flight history.</td><td><a class="chip" href="#c-api">C-API</a><a class="chip" href="#c-least">C-LEAST</a></td><td class="res">New endpoints added without the same checks.</td></tr>
+<tr id="api-d1"><td class="mono">API-D1</td><td>Denial of service</td><td>API abuse or outage blocks synchronisation, tasking and updates.</td><td><a class="chip" href="#c-rate">C-RATE</a><a class="chip" href="#c-offline">C-OFFLINE</a></td><td class="res">Features that genuinely depend on the cloud.</td></tr>
+<tr id="api-e1"><td class="mono">API-E1</td><td>Elevation of privilege</td><td>Broken function-level authorisation lets an ordinary user reach administrative functions such as pushing updates.</td><td><a class="chip" href="#c-api">C-API</a><a class="chip" href="#c-least">C-LEAST</a><a class="chip" href="#c-staged">C-STAGED</a></td><td class="res">Misconfigured roles.</td></tr>
+</tbody></table></div>
+<h2>SC · Supply chain and update path</h2><p>Hardware components, third-party software, build pipeline, signing keys and update distribution.</p>
+<div class="wrap"><table><thead><tr><th>ID</th><th>STRIDE</th><th>Threat</th><th>Controls</th><th>Residual risk</th></tr></thead><tbody>
+<tr id="sc-s1"><td class="mono">SC-S1</td><td>Spoofing</td><td>A counterfeit component or an impostor update server is accepted as genuine.</td><td><a class="chip" href="#c-sbom">C-SBOM</a><a class="chip" href="#c-boot">C-BOOT</a><a class="chip" href="#c-tls">C-TLS</a></td><td class="res">Counterfeits that are functionally identical until they fail.</td></tr>
+<tr id="sc-t1"><td class="mono">SC-T1</td><td>Tampering</td><td>A malicious or vulnerable third-party component enters the build.</td><td><a class="chip" href="#c-sbom">C-SBOM</a><a class="chip" href="#c-repro">C-REPRO</a></td><td class="res">Vulnerabilities in components that are correctly inventoried but not yet disclosed.</td></tr>
+<tr id="sc-r1"><td class="mono">SC-R1</td><td>Repudiation</td><td>Nobody can establish which firmware and components were shipped on which unit.</td><td><a class="chip" href="#c-cm">C-CM</a><a class="chip" href="#c-sbom">C-SBOM</a></td><td class="res">Field modifications outside configuration control.</td></tr>
+<tr id="sc-i1"><td class="mono">SC-I1</td><td>Information disclosure</td><td>Source code or signing keys leak from the build pipeline.</td><td><a class="chip" href="#c-key">C-KEY</a><a class="chip" href="#c-least">C-LEAST</a></td><td class="res">Insiders with legitimate access.</td></tr>
+<tr id="sc-d1"><td class="mono">SC-D1</td><td>Denial of service</td><td>A faulty update disables the fleet, or a sole-source part becomes unavailable.</td><td><a class="chip" href="#c-staged">C-STAGED</a><a class="chip" href="#c-cm">C-CM</a></td><td class="res">Long-lead obsolescence.</td></tr>
+<tr id="sc-e1"><td class="mono">SC-E1</td><td>Elevation of privilege</td><td>A compromised build system signs attacker-supplied code with genuine keys.</td><td><a class="chip" href="#c-key">C-KEY</a><a class="chip" href="#c-repro">C-REPRO</a></td><td class="res">Signing infrastructure is a single point of trust.</td></tr>
+</tbody></table></div>
+<h2>Control catalogue</h2><div class="wrap"><table><thead><tr><th>ID</th><th>Control</th><th>What it means</th><th>Counters</th><th>References</th></tr></thead><tbody>
+<tr id="c-sign"><td class="mono">C-SIGN</td><td>Authenticated datalink with anti-replay</td><td>Per-vehicle link keys, message authentication on every command and telemetry frame, strictly increasing timestamps or counters.</td><td><a class="chip" href="#av-r1">AV-R1</a><a class="chip" href="#cc-s1">CC-S1</a><a class="chip" href="#dl-s1">DL-S1</a><a class="chip" href="#dl-s2">DL-S2</a><a class="chip" href="#dl-t1">DL-T1</a><a class="chip" href="#dl-e1">DL-E1</a></td><td class="res">MAVLink 2 message signing; RFC 2104</td></tr>
+<tr id="c-enc"><td class="mono">C-ENC</td><td>Link encryption</td><td>Confidentiality for commands, telemetry and video where the mission requires it. Complements, does not replace, authentication.</td><td><a class="chip" href="#dl-t1">DL-T1</a><a class="chip" href="#dl-i1">DL-I1</a></td><td class="res">NIST SP 800-207</td></tr>
+<tr id="c-cmdauthz"><td class="mono">C-CMDAUTHZ</td><td>Command authorisation by role</td><td>Safety-critical and configuration commands (parameter write, firmware upload, arming) allowed only from explicitly authorised identities and flight phases.</td><td><a class="chip" href="#cc-e1">CC-E1</a><a class="chip" href="#dl-e1">DL-E1</a></td><td class="res">NIST SP 800-207</td></tr>
+<tr id="c-div"><td class="mono">C-DIV</td><td>Link diversity and tested lost-link behaviour</td><td>Independent bearers where justified; documented and tested behaviour on link loss.</td><td><a class="chip" href="#av-d1">AV-D1</a><a class="chip" href="#dl-d1">DL-D1</a></td><td class="res">ASTM F3269</td></tr>
+<tr id="c-navx"><td class="mono">C-NAVX</td><td>Multi-source navigation integrity</td><td>Inertial, visual and absolute sources cross-checked by an estimator with innovation gating and independent consistency monitors; defined behaviour on disagreement.</td><td><a class="chip" href="#av-s1">AV-S1</a><a class="chip" href="#av-d1">AV-D1</a></td><td class="res">Psiaki and Humphreys 2016; Groves 2013</td></tr>
+<tr id="c-gnssauth"><td class="mono">C-GNSSAUTH</td><td>GNSS interference detection and authenticated signals</td><td>Monitor power, C/N0 and clock behaviour; use navigation message authentication where available.</td><td><a class="chip" href="#av-s1">AV-S1</a></td><td class="res">EUSPA Galileo OSNMA; Psiaki and Humphreys 2016</td></tr>
+<tr id="c-boot"><td class="mono">C-BOOT</td><td>Secure boot and signed firmware with anti-rollback</td><td>Each stage verifies the next against a hardware root of trust; images carry a monotonic security version.</td><td><a class="chip" href="#av-t1">AV-T1</a><a class="chip" href="#av-e1">AV-E1</a><a class="chip" href="#cc-t1">CC-T1</a><a class="chip" href="#sc-s1">SC-S1</a></td><td class="res">NIST SP 800-193; NIST SP 800-147</td></tr>
+<tr id="c-debug"><td class="mono">C-DEBUG</td><td>Locked debug interfaces</td><td>Hardware debug ports disabled or authenticated in production units.</td><td><a class="chip" href="#av-t1">AV-T1</a><a class="chip" href="#av-e1">AV-E1</a></td><td class="res">NIST SP 800-193</td></tr>
+<tr id="c-phys"><td class="mono">C-PHYS</td><td>Physical tamper evidence</td><td>Seals, enclosure switches and inspection on recovery of a vehicle.</td><td><a class="chip" href="#av-t1">AV-T1</a></td><td class="res">IEC 62443-4-2</td></tr>
+<tr id="c-key"><td class="mono">C-KEY</td><td>Key management and zeroisation</td><td>Keys in secure elements or HSMs, unique per device, rotated, revocable, and erased on tamper or loss.</td><td><a class="chip" href="#av-i1">AV-I1</a><a class="chip" href="#dl-s1">DL-S1</a><a class="chip" href="#dl-r1">DL-R1</a><a class="chip" href="#gcs-i1">GCS-I1</a><a class="chip" href="#sc-i1">SC-I1</a><a class="chip" href="#sc-e1">SC-E1</a></td><td class="res">NIST SP 800-57</td></tr>
+<tr id="c-data"><td class="mono">C-DATA</td><td>Encryption at rest and data minimisation</td><td>Full-disk encryption on ground and onboard storage; keep only what the mission needs.</td><td><a class="chip" href="#av-i1">AV-I1</a><a class="chip" href="#cc-i1">CC-I1</a><a class="chip" href="#gcs-i1">GCS-I1</a></td><td class="res">NIST SP 800-111</td></tr>
+<tr id="c-seg"><td class="mono">C-SEG</td><td>Segmentation with a constrained conduit</td><td>Companion computer reaches the flight controller only through an allow-listed, validated command set.</td><td><a class="chip" href="#cc-s1">CC-S1</a><a class="chip" href="#cc-d1">CC-D1</a><a class="chip" href="#cc-e1">CC-E1</a></td><td class="res">IEC 62443-3-3 zones and conduits</td></tr>
+<tr id="c-least"><td class="mono">C-LEAST</td><td>Least privilege</td><td>Services run unprivileged; accounts, tokens and processes get only the rights they need.</td><td><a class="chip" href="#cc-i1">CC-I1</a><a class="chip" href="#cc-e1">CC-E1</a><a class="chip" href="#gcs-e1">GCS-E1</a><a class="chip" href="#api-i1">API-I1</a><a class="chip" href="#api-e1">API-E1</a><a class="chip" href="#sc-i1">SC-I1</a></td><td class="res">NIST SP 800-207</td></tr>
+<tr id="c-rta"><td class="mono">C-RTA</td><td>Runtime assurance and resource limits</td><td>Watchdogs, resource quotas and a simple verified fallback that takes over if complex software misbehaves.</td><td><a class="chip" href="#cc-d1">CC-D1</a></td><td class="res">ASTM F3269</td></tr>
+<tr id="c-ep"><td class="mono">C-EP</td><td>Hardened ground endpoint</td><td>Dedicated device, patched by version, application allow-listing, no general browsing or email, endpoint monitoring.</td><td><a class="chip" href="#gcs-s1">GCS-S1</a><a class="chip" href="#gcs-t1">GCS-T1</a><a class="chip" href="#gcs-d1">GCS-D1</a><a class="chip" href="#gcs-e1">GCS-E1</a></td><td class="res">NIST SP 800-123</td></tr>
+<tr id="c-mfa"><td class="mono">C-MFA</td><td>Individual accounts with phishing-resistant MFA</td><td>No shared operator accounts; hardware-backed authenticators for ground, cloud and fleet logins.</td><td><a class="chip" href="#gcs-s1">GCS-S1</a><a class="chip" href="#gcs-r1">GCS-R1</a><a class="chip" href="#api-s1">API-S1</a></td><td class="res">NIST SP 800-63B</td></tr>
+<tr id="c-integ"><td class="mono">C-INTEG</td><td>Signed mission and configuration files</td><td>Mission plans, geofences and parameter sets are signed by the planning authority and verified before use.</td><td><a class="chip" href="#gcs-t1">GCS-T1</a><a class="chip" href="#api-t1">API-T1</a></td><td class="res">NIST SP 800-207</td></tr>
+<tr id="c-log"><td class="mono">C-LOG</td><td>Tamper-evident, time-synchronised logging</td><td>Hash-chained logs on vehicle, ground and cloud, anchored off-device, with authenticated time.</td><td><a class="chip" href="#av-t1">AV-T1</a><a class="chip" href="#av-r1">AV-R1</a><a class="chip" href="#cc-r1">CC-R1</a><a class="chip" href="#dl-r1">DL-R1</a><a class="chip" href="#gcs-r1">GCS-R1</a><a class="chip" href="#api-t1">API-T1</a><a class="chip" href="#api-r1">API-R1</a></td><td class="res">NIST SP 800-92</td></tr>
+<tr id="c-spare"><td class="mono">C-SPARE</td><td>Redundant ground capability</td><td>Tested spare GCS and a procedure to transfer control.</td><td><a class="chip" href="#gcs-d1">GCS-D1</a></td><td class="res">ASTM F3269</td></tr>
+<tr id="c-token"><td class="mono">C-TOKEN</td><td>Short-lived, scoped, bound tokens</td><td>Access tokens with short expiry, narrow scope, refresh rotation and sender constraint.</td><td><a class="chip" href="#api-s1">API-S1</a></td><td class="res">OAuth 2.0 Security Best Current Practice (RFC 9700)</td></tr>
+<tr id="c-api"><td class="mono">C-API</td><td>Object- and function-level authorisation</td><td>Every request authorised server-side for the specific object and function, from the caller&#x27;s identity.</td><td><a class="chip" href="#api-t1">API-T1</a><a class="chip" href="#api-i1">API-I1</a><a class="chip" href="#api-e1">API-E1</a></td><td class="res">OWASP API Security Top 10</td></tr>
+<tr id="c-rate"><td class="mono">C-RATE</td><td>Rate limiting and abuse protection</td><td>Quotas and throttling on APIs and on link message handling.</td><td><a class="chip" href="#dl-d1">DL-D1</a><a class="chip" href="#api-d1">API-D1</a></td><td class="res">OWASP API Security Top 10</td></tr>
+<tr id="c-offline"><td class="mono">C-OFFLINE</td><td>Degraded local operation</td><td>Core flight and mission functions continue without the cloud; synchronisation resumes later.</td><td><a class="chip" href="#api-d1">API-D1</a></td><td class="res">NIST SP 800-207</td></tr>
+<tr id="c-tls"><td class="mono">C-TLS</td><td>Authenticated transport</td><td>Mutual TLS or certificate validation for every service connection, including update downloads.</td><td><a class="chip" href="#cc-i1">CC-I1</a><a class="chip" href="#sc-s1">SC-S1</a></td><td class="res">NIST SP 800-52</td></tr>
+<tr id="c-sbom"><td class="mono">C-SBOM</td><td>SBOM and component provenance</td><td>Machine-readable inventory of software and hardware components with origin; vulnerability monitoring against it.</td><td><a class="chip" href="#cc-t1">CC-T1</a><a class="chip" href="#sc-s1">SC-S1</a><a class="chip" href="#sc-t1">SC-T1</a><a class="chip" href="#sc-r1">SC-R1</a></td><td class="res">NTIA SBOM minimum elements; EU Cyber Resilience Act</td></tr>
+<tr id="c-repro"><td class="mono">C-REPRO</td><td>Build provenance and reproducible builds</td><td>Signed build attestations; independent rebuilds confirm binaries match source.</td><td><a class="chip" href="#cc-t1">CC-T1</a><a class="chip" href="#sc-t1">SC-T1</a><a class="chip" href="#sc-e1">SC-E1</a></td><td class="res">SLSA; Reproducible Builds</td></tr>
+<tr id="c-cm"><td class="mono">C-CM</td><td>Configuration management</td><td>Record of what hardware, firmware and software is on which unit.</td><td><a class="chip" href="#cc-r1">CC-R1</a><a class="chip" href="#sc-r1">SC-R1</a><a class="chip" href="#sc-d1">SC-D1</a></td><td class="res">ISO 10007</td></tr>
+<tr id="c-staged"><td class="mono">C-STAGED</td><td>Staged rollout with recovery</td><td>Updates reach a small group first; a known-good image can be restored.</td><td><a class="chip" href="#api-e1">API-E1</a><a class="chip" href="#sc-d1">SC-D1</a></td><td class="res">NIST SP 800-193</td></tr>
+<tr id="c-ir"><td class="mono">C-IR</td><td>Incident response plan</td><td>Procedures for compromised GCS, leaked keys and suspected spoofing, with contacts and reporting obligations.</td><td><a class="chip" href="#gcs-d1">GCS-D1</a></td><td class="res">NIST SP 800-61</td></tr>
+</tbody></table></div></main></body></html>

@@ -1,0 +1,2 @@
+# Runtime: PyYAML reads the threat model. Everything else uses the Python 3.9+ standard library.
+pyyaml>=5.4
