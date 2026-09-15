@@ -13,49 +13,49 @@
   </style>
   <rect width="1200" height="400" fill="#F5F7FA"/>
   <rect x="0.5" y="0.5" width="1199" height="399" fill="none" stroke="#D8DEE6"/>
-  <text x="64" y="76" class="mono" font-size="13" letter-spacing="2.2" fill="#6B7688">DARKANALYTICA</text>
+  <text x="64" y="76" class="mono" font-size="13" letter-spacing="2.2" fill="#5F6B7C">DARKANALYTICA</text>
   <rect x="64" y="112" width="56" height="3" fill="#0B2545"/>
   <text x="64" y="180" class="display" font-size="50" font-weight="600" fill="#0E1726">UAS Cyber Threat Model</text>
   <text x="64" y="222" class="sans" font-size="19" fill="#3D4A5C">STRIDE across six trust boundaries, each threat paired with</text>
   <text x="64" y="250" class="sans" font-size="19" fill="#3D4A5C">the control that counters it. Defensive and educational.</text>
-  <text x="64" y="326" class="mono" font-size="12" letter-spacing="1" fill="#6B7688">STRIDE · TRUST BOUNDARIES · MAVLINK 2 SIGNING · REPLAY · SECURE BOOT · HASH-CHAINED LOGS</text>
+  <text x="64" y="326" class="mono" font-size="12" letter-spacing="1" fill="#5F6B7C">STRIDE · TRUST BOUNDARIES · MAVLINK 2 SIGNING · REPLAY · SECURE BOOT · HASH-CHAINED LOGS</text>
   <g>
-    <text x="858" y="135" text-anchor="end" class="mono" font-size="11" fill="#6B7688">AV</text>
+    <text x="858" y="135" text-anchor="end" class="mono" font-size="11" fill="#5F6B7C">AV</text>
     <rect class="cell" style="animation-delay:0.0s" x="870" y="118" width="26" height="26" rx="3"/>
     <rect class="cell" style="animation-delay:0.12s" x="904" y="118" width="26" height="26" rx="3"/>
     <rect class="cell" style="animation-delay:0.24s" x="938" y="118" width="26" height="26" rx="3"/>
     <rect class="cell" style="animation-delay:0.36s" x="972" y="118" width="26" height="26" rx="3"/>
     <rect class="cell" style="animation-delay:0.48s" x="1006" y="118" width="26" height="26" rx="3"/>
     <rect class="cell" style="animation-delay:0.6s" x="1040" y="118" width="26" height="26" rx="3"/>
-    <text x="858" y="169" text-anchor="end" class="mono" font-size="11" fill="#6B7688">CC</text>
+    <text x="858" y="169" text-anchor="end" class="mono" font-size="11" fill="#5F6B7C">CC</text>
     <rect class="cell" style="animation-delay:0.72s" x="870" y="152" width="26" height="26" rx="3"/>
     <rect class="cell" style="animation-delay:0.84s" x="904" y="152" width="26" height="26" rx="3"/>
     <rect class="cell" style="animation-delay:0.96s" x="938" y="152" width="26" height="26" rx="3"/>
     <rect class="cell" style="animation-delay:1.08s" x="972" y="152" width="26" height="26" rx="3"/>
     <rect class="cell" style="animation-delay:1.2s" x="1006" y="152" width="26" height="26" rx="3"/>
     <rect class="cell" style="animation-delay:1.32s" x="1040" y="152" width="26" height="26" rx="3"/>
-    <text x="858" y="203" text-anchor="end" class="mono" font-size="11" fill="#6B7688">DL</text>
+    <text x="858" y="203" text-anchor="end" class="mono" font-size="11" fill="#5F6B7C">DL</text>
     <rect class="cell" style="animation-delay:1.44s" x="870" y="186" width="26" height="26" rx="3"/>
     <rect class="cell" style="animation-delay:1.56s" x="904" y="186" width="26" height="26" rx="3"/>
     <rect class="cell" style="animation-delay:1.68s" x="938" y="186" width="26" height="26" rx="3"/>
     <rect class="cell" style="animation-delay:1.8s" x="972" y="186" width="26" height="26" rx="3"/>
     <rect class="cell" style="animation-delay:1.92s" x="1006" y="186" width="26" height="26" rx="3"/>
     <rect class="cell" style="animation-delay:2.04s" x="1040" y="186" width="26" height="26" rx="3"/>
-    <text x="858" y="237" text-anchor="end" class="mono" font-size="11" fill="#6B7688">GCS</text>
+    <text x="858" y="237" text-anchor="end" class="mono" font-size="11" fill="#5F6B7C">GCS</text>
     <rect class="cell" style="animation-delay:2.16s" x="870" y="220" width="26" height="26" rx="3"/>
     <rect class="cell" style="animation-delay:2.28s" x="904" y="220" width="26" height="26" rx="3"/>
     <rect class="cell" style="animation-delay:2.4s" x="938" y="220" width="26" height="26" rx="3"/>
     <rect class="cell" style="animation-delay:2.52s" x="972" y="220" width="26" height="26" rx="3"/>
     <rect class="cell" style="animation-delay:2.64s" x="1006" y="220" width="26" height="26" rx="3"/>
     <rect class="cell" style="animation-delay:2.76s" x="1040" y="220" width="26" height="26" rx="3"/>
-    <text x="858" y="271" text-anchor="end" class="mono" font-size="11" fill="#6B7688">API</text>
+    <text x="858" y="271" text-anchor="end" class="mono" font-size="11" fill="#5F6B7C">API</text>
     <rect class="cell" style="animation-delay:2.88s" x="870" y="254" width="26" height="26" rx="3"/>
     <rect class="cell" style="animation-delay:3.0s" x="904" y="254" width="26" height="26" rx="3"/>
     <rect class="cell" style="animation-delay:3.12s" x="938" y="254" width="26" height="26" rx="3"/>
     <rect class="cell" style="animation-delay:3.24s" x="972" y="254" width="26" height="26" rx="3"/>
     <rect class="cell" style="animation-delay:3.36s" x="1006" y="254" width="26" height="26" rx="3"/>
     <rect class="cell" style="animation-delay:3.48s" x="1040" y="254" width="26" height="26" rx="3"/>
-    <text x="858" y="305" text-anchor="end" class="mono" font-size="11" fill="#6B7688">SC</text>
+    <text x="858" y="305" text-anchor="end" class="mono" font-size="11" fill="#5F6B7C">SC</text>
     <rect class="cell" style="animation-delay:3.6s" x="870" y="288" width="26" height="26" rx="3"/>
     <rect class="cell" style="animation-delay:3.72s" x="904" y="288" width="26" height="26" rx="3"/>
     <rect class="cell" style="animation-delay:3.84s" x="938" y="288" width="26" height="26" rx="3"/>
@@ -70,6 +70,6 @@
     <text x="1053" y="108" text-anchor="middle" class="mono" font-size="12" fill="#0B2545">E</text>
     <rect class="hot" x="866" y="182" width="204" height="34" rx="4" fill="none" stroke="#8A6A1F" stroke-width="2"/>
     <text class="hot mono" x="1078" y="204" font-size="11" fill="#8A6A1F">datalink</text>
-    <text x="870" y="340" class="mono" font-size="11" fill="#6B7688">36 cells · none left blank</text>
+    <text x="870" y="340" class="mono" font-size="11" fill="#5F6B7C">36 cells · none left blank</text>
   </g>
 </svg>

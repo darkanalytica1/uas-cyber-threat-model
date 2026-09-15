@@ -48,7 +48,7 @@ def to_markdown(m: ThreatModel) -> str:
 
 
 CSS = """
-:root{--page:#F5F7FA;--surface:#FFFFFF;--line:#D8DEE6;--ink:#0E1726;--ink2:#3D4A5C;--ink3:#6B7688;
+:root{--page:#F5F7FA;--surface:#FFFFFF;--line:#D8DEE6;--ink:#0E1726;--ink2:#3D4A5C;--ink3:#5F6B7C;
 --navy:#0B2545;--brass:#8A6A1F;--teal:#2F6F73;--tint:#EDF1F6}
 *{box-sizing:border-box}body{margin:0;background:var(--page);color:var(--ink);
 font:16px/1.6 'IBM Plex Sans',system-ui,-apple-system,'Segoe UI',sans-serif}
